@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <title>Yuriy Netesov. .:: {{ title }} ::.</title>
+  </head>
+  <body>
+    <div id="sidepanel">
+      <div id="about">
+       <h2>Yuriy Netesov</h2>
+      </div>
+      <div id="menu">
+        <ul>
+          <li><a href="./about.html" class="menu_item">About me</a></li>
+          <li><a href="./articles.html" class="menu_item">Articles</a></li>
+          <li><a href="./hire.html" class="menu_item">Hire me</a></li>
+        </ul>
+      </div>
+      <div id="contacts">
+        <h3>Contact me</h3>
+        <ul>
+          <li><a href="http://ua.linkedin.com/in/ynetesov">linked in</a>
+          <li><a href="mailto: retnuhed@gmail.com">email: retnuhed@gmail.com</a></li>
+          <li>skype: yurii_netesov</li>
+        </ul>
+      </div>
+    </div>
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
