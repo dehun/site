@@ -1,8 +1,7 @@
 /* body */
 body {
-    /* font-family: "Times New Roman", Times, serif; */
-    /* font-family: "Courier New", Courier, monospace; */
-	margin: 5% 5% 5% 5%;
+	/* margin: 5% 5% 5% 5%; */
+    margin: 5% 5%;
     background-color: #0f0f0f;
     color: #dcdcdc;
     font-size: 100%;
@@ -47,6 +46,8 @@ h3 {
     width: 20%;
     height: 100%;
     background-color: #1a1a1a;
+    margin-left: 50px;
+    padding: 10px 10px 10px 10px;
 }
 
 
