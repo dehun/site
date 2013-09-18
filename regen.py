@@ -39,16 +39,22 @@ def generate_page_for_article(article_file):
         article_body=article_html)
 
     article_out_filename = './static/articles/' + \
-                           parse_article_filename(article_file)['name'] + '.html'
+                           parse_article_filename(article_file)['name'] + \
+                           '.html'
     with open(article_out_filename, 'w') as article_out:
         article_out.write(rendered_article)
 
 
 def generate_index_page_for_articles(articles):
+    # sort articles by date
+    sorted_articles = articles[:]
+
+
+    # render them to template
     logging.info("generating index file")
 
     rendered_index = templates.get_template('articles_index.html').render(
-        articles = [parse_article_filename(a) for a in articles])
+        articles=[parse_article_filename(a) for a in sorted_articles])
 
     with open('./static/articles.html', 'w') as index_out:
         index_out.write(rendered_index)
@@ -75,6 +81,14 @@ def generate_info_pages():
     with open('./static/about.html', 'w') as about_out:
         about_out.write(rendered_about)
 
+    # generate projects page
+    about_text = html_from_markdown_file('./pages/projects.md')
+    rendered_about = templates.get_template('page.html').render(
+        title='About',
+        text=about_text)
+    with open('./static/projects.html', 'w') as about_out:
+        about_out.write(rendered_about)
+
     # generate hire page
     about_text = html_from_markdown_file('./pages/about.md')
     rendered_about = templates.get_template('page.html').render(
@@ -83,9 +97,11 @@ def generate_info_pages():
     with open('./static/hire.html', 'w') as about_out:
         about_out.write(rendered_about)
 
+
 def prepare_resources():
     logging.info("preparing resources")
     subprocess.check_call("rsync -vra ./res/* ./static", shell=True)
+
 
 def main():
     # prepare static folder
