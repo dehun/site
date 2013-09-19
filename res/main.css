@@ -1,6 +1,7 @@
 /* body */
 body {
 	/* margin: 5% 5% 5% 5%; */
+    font-family: "Inconsolata";
     margin: 5% 5%;
     background-color: #0f0f0f;
     color: #dcdcdc;
@@ -16,6 +17,7 @@ code {
 
 /* headers */
 h1 {
+    font-family: "Impact";
     color: #f0dfaf;
     font-size: 250%;
     font-style: bold;
@@ -23,12 +25,14 @@ h1 {
 
 
 h2 {
+    font-family: "Impact";
     color: #f0dfaf;
     font-size:150%;
     font-style: bold;
 }
 
 h3 {
+    font-family: "Impact";
     color: #f0dfaf;
     font-size:100%;
     font-style: bold;
@@ -47,6 +51,7 @@ h3 {
     height: 100%;
     background-color: #1a1a1a;
     margin-left: 50px;
+    margin-bottom: 50px;
     padding: 10px 10px 10px 10px;
 }
 
@@ -55,16 +60,19 @@ h3 {
 a:link {
     color: #f0dfaf;
     text-decoration: none;
+    font-style: italic;
 }
 
 a:visited {
     color: #f0dfaf;
     text-decoration: none;
+    font-style: italic;
 }
 
 a:hover {
     color: #f0dfaf;
     text-decoration: underline;
+    font-style: italic;
 }
 
 /* a:active { */
@@ -73,21 +81,25 @@ a:hover {
 /* } */
 
 a.menu_item:link {
+    font-family: "Impact";
     font-size: 120%;
     color: #f0dfaf;
     text-decoration: none;
+    font-style: normal;
 }
 
-a.menu_item:visited.menu_item {
+a.menu_item:visited {
     font-size: 120%;
     color: #f0dfaf;
     text-decoration: none;
+    font-style: normal;
 }
 
-a.menu_item:hover.menu_item {
+a.menu_item:hover {
     font-size: 120%;
     color: #f0dfaf;
     text-decoration: underline;
+    font-style: normal;
 }
 
 /* a.menu_item:active.menu_item { */

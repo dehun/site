@@ -17,6 +17,7 @@ def parse_article_filename(article_file):
     (name, day, month, year, title) = \
         re.search(".+/((\d\d)_([a-z]{3})_(\d\d\d\d)-(.+)).md",
                   article_file).groups()
+    title = title.replace('_', ' ')
     return {'name': name,
             'day': day,
             'month': month,
