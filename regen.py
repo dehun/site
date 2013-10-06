@@ -7,6 +7,8 @@ import subprocess
 
 import jinja2
 
+logging.basicConfig(level=logging.INFO)
+
 TEMPLATES_DIR = "./templates/"
 
 templates = jinja2.Environment(
@@ -26,7 +28,7 @@ def parse_article_filename(article_file):
 
 
 def html_from_markdown_file(markdown_file):
-    article_html = subprocess.check_output("markdown %s" % (markdown_file),
+    article_html = subprocess.check_output("markdown \"%s\"" % (markdown_file),
                                            shell=True)
     return article_html
 
@@ -49,8 +51,7 @@ def generate_page_for_article(article_file):
 def generate_index_page_for_articles(articles):
     # sort articles by date
     sorted_articles = articles[:]
-
-
+    # TODO: implement sorting of articles here
     # render them to template
     logging.info("generating index file")
 
@@ -85,18 +86,21 @@ def generate_info_pages():
     # generate projects page
     about_text = html_from_markdown_file('./pages/projects.md')
     rendered_about = templates.get_template('page.html').render(
-        title='About',
+        title='Projects',
         text=about_text)
-    with open('./static/projects.html', 'w') as about_out:
-        about_out.write(rendered_about)
+    with open('./static/projects.html', 'w') as projects_out:
+        projects_out.write(rendered_about)
 
     # generate hire page
-    about_text = html_from_markdown_file('./pages/about.md')
+    about_text = html_from_markdown_file('./pages/hire.md')
     rendered_about = templates.get_template('page.html').render(
-        title='About',
+        title='Hire',
         text=about_text)
-    with open('./static/hire.html', 'w') as about_out:
-        about_out.write(rendered_about)
+    with open('./static/hire.html', 'w') as hire_out:
+        hire_out.write(rendered_about)
+
+    # make a link from about to index
+    os.link("static/about.html", "static/index.html")
 
 
 def prepare_resources():

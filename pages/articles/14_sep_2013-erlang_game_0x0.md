@@ -27,9 +27,36 @@ This project overlapped with my high interest to erlang & OTP - so I chose erlan
 Database chose fall on Mnesia - this is erlang embedded database with many reach features like clustering, transactions and so on.
 Client side was decided to be written on ActionScript3(adobe flash) - a quite classic choice for such kind of tasks.
 
-	def print_one(x, y):
-		print 123
-		print x, y
-		print y[1]
+## Protocol chose ##
+As I mentioned above we chose the TCP transport. TCP is streaming protocol. It means that it is not designed to send a messages. This is illustrated with the next sample:
+sender:
 
-	
+    send("dead")
+    send("beef")
+
+receiver:
+
+    msg1 = recv()
+    msg2 = recv()
+
+In case when you use UDP - you will get "dead" in msg1 and "beef" in msg2. In case of TCP you can get "deafbeef" in msg1 and nothing in msg2. Or you can get "de" in msg1 and "adbeef" in msg2. But we should use TCP if we want our messages to be ordered
+There are many solution to fix TCP to be a more message friendly. Most popular are delimiter and size prefix.
+### Delimiter approach ###
+With delimiter approach you insert a magic bytes sequence between the messages.
+sender:
+
+    send("dead")
+    send("|")      # the delimiter
+    send("beef")
+
+receiver:
+
+    # receive first message
+    receive_msg:
+        buff = recv()
+        splitted = buff.split('|')
+        if len(splitted) != 2:
+            put_back_to_network_buffer(buff)
+            goto  receive_msg
+        [msg1, rest] = splitted
+        put_back_to_buffer(rest)
