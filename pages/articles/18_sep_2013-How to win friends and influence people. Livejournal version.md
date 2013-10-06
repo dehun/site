@@ -10,8 +10,8 @@ We can participate in different 'friend me please' lists. But this will not give
 By target auditory I mean for example photographers.
 
 So we have 2 problems:
-* Find people which are target auditory
-* Make that people to subscribe to our journal(friend us)
+* Find people which are target auditory.
+* Make that people to subscribe to our journal(friend us).
 
 ## People filtering ##
 The solution to the first problem is very simple - there are already formed lists by subject we want.
@@ -50,7 +50,7 @@ It works really slow. But it should not work fast - livejournal will block us if
 ## Retrospective ##
 Today for the same project I would chose python + beautifulsoup + sqlalchemy.
 
-* python is just the same as perl. But more easy to read/write in my opinion and have a better future.
+* python is just the same thing as perl. But more easy to read/write in my opinion and have a better future.
 * beautifulsoup will eliminate the need in regular expressions for parsing HTML pages.
 * sqlalchemy for all the sql works. It will prevent all the errors I got with that raw SQL statements.
 
@@ -58,3 +58,4 @@ Today for the same project I would chose python + beautifulsoup + sqlalchemy.
 ## Conclusion ##
 I am happy with this project. It was a good for its time.
 We promoted some livejournals to ~700 active mutual friends in 1-2 months.
+I think that this is good technique overall and will work well on broad set of social platforms.
