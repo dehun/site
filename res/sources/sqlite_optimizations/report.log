@@ -1,0 +1,84 @@
+test: default_config
+	total: 390267
+	runtime: 1200
+	ops per second: 325.222504
+test: 100_ops_in_transaction
+	total: 4649100
+	runtime: 1200
+	ops per second: 3874.250000
+test: 1000_ops_in_transaction
+	total: 10217000
+	runtime: 1200
+	ops per second: 8514.166992
+test: 10000_ops_in_transaction
+	total: 11110943
+	runtime: 1200
+	ops per second: 9259.119141
+test: 10000000_ops_in_transaction
+	total: 11278354
+	runtime: 1200
+	ops per second: 9398.627930
+test: synchronous_off_config
+	total: 12601839
+	runtime: 1200
+	ops per second: 10501.532227
+test: journal_off_config
+	total: 2333511
+	runtime: 1200
+	ops per second: 1944.592529
+test: journal_delete_config
+	total: 389034
+	runtime: 1200
+	ops per second: 324.195007
+test: journal_truncate_config
+	total: 445043
+	runtime: 1200
+	ops per second: 370.869171
+test: journal_persist_config
+	total: 597304
+	runtime: 1200
+	ops per second: 497.753326
+test: journal_memory_config
+	total: 1898824
+	runtime: 1200
+	ops per second: 1582.353394
+test: journal_wal_config
+	total: 4143846
+	runtime: 1200
+	ops per second: 3453.205078
+test: journal_wal_config_autocheckpoint_off
+	total: 1787602
+	runtime: 1201
+	ops per second: 1488.427979
+test: journal_wal_config_autocheckpoint_10000
+	total: 3963780
+	runtime: 1200
+	ops per second: 3303.149902
+test: vacum_off_config
+	total: 410505
+	runtime: 1200
+	ops per second: 342.087494
+test: exclusive_lock
+	total: 980775
+	runtime: 1200
+	ops per second: 817.312500
+test: synchronouf_off_and_journal_off
+	total: 22066307
+	runtime: 1200
+	ops per second: 18388.589844
+test: synchronouf_off_and_journal_off_and_vacuum_off
+	total: 21721941
+	runtime: 1200
+	ops per second: 18101.617188
+test: synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock
+	total: 26863458
+	runtime: 1200
+	ops per second: 22386.214844
+test: synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock_1000_ops_in_transaction
+	total: 29370021
+	runtime: 1200
+	ops per second: 24475.017578
+test: synchronouf_off_and_journal_wal_and_vacuum_off_and_exclusive_lock_1000_ops_in_transaction
+	total: 29514000
+	runtime: 1201
+	ops per second: 24574.521484
