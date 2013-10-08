@@ -7,12 +7,18 @@
 #define CONFIG_DEFAULT "SELECT 1;"
 #define CONFIG_SYNCHRONOUS_OFF "PRAGMA synchronous=OFF;"
 #define CONFIG_JOURNAL_OFF "PRAGMA journal_mode = OFF;"
-#define CONFIG_JOURNAL_MEMORY "PRAGMA journal_mode = memory;"
+#define CONFIG_JOURNAL_DELETE "PRAGMA journal_mode = DELETE;"
+#define CONFIG_JOURNAL_TRUNCATE "PRAGMA journal_mode = TRUNCATE;"
+#define CONFIG_JOURNAL_PERSIST "PRAGMA journal_mode = PERSIST;"
+#define CONFIG_JOURNAL_MEMORY "PRAGMA journal_mode = MEMORY;"
+#define CONFIG_JOURNAL_WAL "PRAGMA journal_mode = WAL;"
+#define CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_OFF "PRAGMA journal_mode = WAL; PRAGMA wal_autocheckpoint = 0;"
+#define CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_10000 "PRAGMA journal_mode = WAL; PRAGMA wal_autocheckpoint = 10000;"
 #define CONFIG_VACUM_OFF "PRAGMA auto_vacum = NONE;"
 #define CONFIG_EXLUSIVE_LOCK "PRAGMA locking_mode = EXCLUSIVE;"
 
 
-#define TEST_RUN_TIME 15      /* 1 minutes */
+#define TEST_RUN_TIME 10      /* 20 minutes */
 #define TEST_INSERT_PERCENTAGE 60
 #define TEST_SELECT_PERCENTAGE 30
 #define TEST_DELETE_PERCENTAGE 10
@@ -33,7 +39,7 @@ int callback(void *context, int argc, char **argv, char **columnNames) {
 #define BUFFER_SIZE 1024
 
 unsigned long _test(time_t time_to_run, const char* config,
-                         int group_transaction, time_t *time_spent) {
+                         int ops_in_transaction, time_t *time_spent) {
   time_t start_time;
   char *error_message = NULL;
   sqlite3* db;
@@ -59,30 +65,34 @@ unsigned long _test(time_t time_to_run, const char* config,
   unsigned long selects = 0;
   unsigned long deletes = 0;
 
-  if (group_transaction) {
-    sqlite3_exec(db, "BEGIN", callback, 0, &error_message);
-    CHECK_SQL_RESULT;
-  }
+  unsigned int already_done_ops_in_transaction = 0;
 
   while (time(NULL) - start_time < time_to_run) { /* run for a time_to_run time */
+    /* transactions logic */
+    if (ops_in_transaction && (already_done_ops_in_transaction == 0)) {
+      sqlite3_exec(db, "BEGIN", callback, 0, &error_message);
+      CHECK_SQL_RESULT;
+    }
+
+    /* perform operations - insert/delete/select */
     int drop = rand() % 100;
     if (drop <= TEST_INSERT_PERCENTAGE) {
       /* perform insert */
       snprintf(buff, BUFFER_SIZE, "INSERT INTO t (t1, t2 ,t3) VALUES(%d, %d, %d);",
-               rand()%500, rand()%500, rand()%500);
+               rand()%50000, rand()%50000, rand()%50000);
       sqlite3_exec(db, buff, callback, 0, &error_message);
       CHECK_SQL_RESULT;
       ++inserts;
     } else if ((drop > TEST_INSERT_PERCENTAGE) && (drop <= TEST_INSERT_PERCENTAGE + TEST_SELECT_PERCENTAGE)) {
       /* perform select */
-      snprintf(buff, BUFFER_SIZE, "SELECT FROM t WHERE t%d = %d", rand()%3 + 1, rand()%500);
+      snprintf(buff, BUFFER_SIZE, "SELECT FROM t WHERE t%d = %d", rand()%3 + 1, rand()%50000);
       sqlite3_exec(db, buff, callback, 0, &error_message);
       CHECK_SQL_RESULT;
       ++selects;
     } else if ((drop > TEST_INSERT_PERCENTAGE + TEST_SELECT_PERCENTAGE)) {
       /* perofrm delete */
       snprintf(buff, BUFFER_SIZE, "DELETE FROM t WHERE t%d = %d",
-               1 + rand()%3, rand() % 500);
+               1 + rand()%3, rand() % 50000);
       sqlite3_exec(db, buff, callback, 0, &error_message);
       CHECK_SQL_RESULT;
       ++deletes;
@@ -90,13 +100,23 @@ unsigned long _test(time_t time_to_run, const char* config,
       printf("[e] invalid drop %d\n", drop);
       return -1;
     }
+
+    /* transactions logic */
+    ++already_done_ops_in_transaction;
+    if (ops_in_transaction && (already_done_ops_in_transaction == ops_in_transaction)) {
+      sqlite3_exec(db, "COMMIT", callback, 0, &error_message);
+      CHECK_SQL_RESULT;
+      already_done_ops_in_transaction = 0;
+    }
   }
 
-
-  if (group_transaction) {
+  if (ops_in_transaction && (already_done_ops_in_transaction == ops_in_transaction)) {
     sqlite3_exec(db, "COMMIT", callback, 0, &error_message);
     CHECK_SQL_RESULT;
+    already_done_ops_in_transaction = 0;
   }
+
+
 
   /* clean up */
   ret = sqlite3_close(db);
@@ -124,37 +144,64 @@ int run_a_test() {
   time_t time_spent;
   /* default config */
   ops = _test(TEST_RUN_TIME, CONFIG_DEFAULT, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_default_config");
-  /* single_transaction config */
-  ops = _test(TEST_RUN_TIME, CONFIG_DEFAULT, 1, &time_spent);
-  print_test_results(ops, time_spent, "write_single_transaction");
+  print_test_results(ops, time_spent, "default_config");
+  /* single_transaction 100 ops in trans */
+  ops = _test(TEST_RUN_TIME, CONFIG_DEFAULT, 100, &time_spent);
+  print_test_results(ops, time_spent, "100_ops_in_transaction");
+  /* single_transaction 1000 ops in trans */
+  ops = _test(TEST_RUN_TIME, CONFIG_DEFAULT, 1000, &time_spent);
+  print_test_results(ops, time_spent, "1000_ops_in_transaction");
+  /* single_transaction 100000 ops in trans */
+  ops = _test(TEST_RUN_TIME, CONFIG_DEFAULT, 10000, &time_spent);
+  print_test_results(ops, time_spent, "10000_ops_in_transaction");
+  /* single_transaction 10000000 ops in trans */
+  ops = _test(TEST_RUN_TIME, CONFIG_DEFAULT, 10000000, &time_spent);
+  print_test_results(ops, time_spent, "10000000_ops_in_transaction");
   /* synchronous off */
   ops = _test(TEST_RUN_TIME, CONFIG_SYNCHRONOUS_OFF, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_synchronous_off_config");
+  print_test_results(ops, time_spent, "synchronous_off_config");
   /* journal off */
   ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_OFF, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_journal_off_config");
-  /* journal off */
+  print_test_results(ops, time_spent, "journal_off_config");
+  /* journal delete */
+  ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_DELETE, 0, &time_spent);
+  print_test_results(ops, time_spent, "journal_delete_config");
+  /* journal truncate */
+  ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_TRUNCATE, 0, &time_spent);
+  print_test_results(ops, time_spent, "journal_truncate_config");
+  /* journal persist */
+  ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_PERSIST, 0, &time_spent);
+  print_test_results(ops, time_spent, "journal_persist_config");
+  /* journal memory */
   ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_MEMORY, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_journal_memory_config");
+  print_test_results(ops, time_spent, "journal_memory_config");
+  /* journal wal */
+  ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_WAL, 0, &time_spent);
+  print_test_results(ops, time_spent, "journal_wal_config");
+  /* journal wal autocheckpoint off */
+  ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_OFF, 0, &time_spent);
+  print_test_results(ops, time_spent, "journal_wal_config_autocheckpoint_off");
+  /* journal wal autocheckpoint 10000 */
+  ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_10000, 0, &time_spent);
+  print_test_results(ops, time_spent, "journal_wal_config_autocheckpoint_10000");
   /* vacuum off */
   ops = _test(TEST_RUN_TIME, CONFIG_VACUM_OFF, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_vacum_off_config");
+  print_test_results(ops, time_spent, "vacum_off_config");
   /* locking exclusive */
   ops = _test(TEST_RUN_TIME, CONFIG_EXLUSIVE_LOCK, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_exclusive_lock");
+  print_test_results(ops, time_spent, "exclusive_lock");
   /* syncornous_off + jounrnal_off */
   strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
   ops = _test(TEST_RUN_TIME, config_buffer, 0, &time_spent);
-  print_test_results(ops, time_spent, "write_synchronouf_off_and_journal_off");
+  print_test_results(ops, time_spent, "synchronouf_off_and_journal_off");
   /* synchronous_off + jounrnal_off + vacum_off */
   strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
   strcat(config_buffer, CONFIG_VACUM_OFF);
   ops = _test(TEST_RUN_TIME, config_buffer, 0, &time_spent);
   print_test_results(ops, time_spent,
-                     "write_synchronouf_off_and_journal_off_and_vacuum_off");
+                     "synchronouf_off_and_journal_off_and_vacuum_off");
   /* synchronous_off + jounrnal_off + vacum_off + exclusive_lock */
   strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
@@ -162,15 +209,23 @@ int run_a_test() {
   strcat(config_buffer, CONFIG_EXLUSIVE_LOCK);
   ops = _test(TEST_RUN_TIME, config_buffer, 0, &time_spent);
   print_test_results(ops, time_spent,
-                     "write_synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock");
-  /* synchronous_off + jounrnal_off + vacum_off + exclusive_lock + single_transaction */
+                     "synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock");
+  /* synchronous_off + jounrnal_off + vacum_off + exclusive_lock + 1000 ops in transaction */
   strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
   strcat(config_buffer, CONFIG_VACUM_OFF);
   strcat(config_buffer, CONFIG_EXLUSIVE_LOCK);
-  ops = _test(TEST_RUN_TIME, config_buffer, 1, &time_spent);
+  ops = _test(TEST_RUN_TIME, config_buffer, 1000, &time_spent);
   print_test_results(ops, time_spent,
-                     "write_synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock_single_transaction");
+                     "synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock_1000_ops_in_transaction");
+  /* synchronous_off + jounrnal_wal + vacum_off + exclusive_lock + 1000 ops in transaction */
+  strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
+  strcat(config_buffer, CONFIG_JOURNAL_WAL);
+  strcat(config_buffer, CONFIG_VACUM_OFF);
+  strcat(config_buffer, CONFIG_EXLUSIVE_LOCK);
+  ops = _test(TEST_RUN_TIME, config_buffer, 1000, &time_spent);
+  print_test_results(ops, time_spent,
+                     "synchronouf_off_and_journal_wal_and_vacuum_off_and_exclusive_lock_1000_ops_in_transaction");
 }
 
 
