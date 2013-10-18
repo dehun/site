@@ -14,7 +14,7 @@
 #define CONFIG_JOURNAL_WAL "PRAGMA journal_mode = WAL;"
 #define CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_OFF "PRAGMA journal_mode = WAL; PRAGMA wal_autocheckpoint = 0;"
 #define CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_10000 "PRAGMA journal_mode = WAL; PRAGMA wal_autocheckpoint = 10000;"
-#define CONFIG_VACUM_OFF "PRAGMA auto_vacum = NONE;"
+#define CONFIG_VACUUM_FULL "PRAGMA auto_vacum = FULL;"
 #define CONFIG_EXLUSIVE_LOCK "PRAGMA locking_mode = EXCLUSIVE;"
 
 
@@ -185,8 +185,8 @@ int run_a_test() {
   ops = _test(TEST_RUN_TIME, CONFIG_JOURNAL_WAL_AUTOCHECKPOINT_10000, 0, &time_spent);
   print_test_results(ops, time_spent, "journal_wal_config_autocheckpoint_10000");
   /* vacuum off */
-  ops = _test(TEST_RUN_TIME, CONFIG_VACUM_OFF, 0, &time_spent);
-  print_test_results(ops, time_spent, "vacum_off_config");
+  ops = _test(TEST_RUN_TIME, CONFIG_VACUUM_FULL, 0, &time_spent);
+  print_test_results(ops, time_spent, "vacuum_full_config");
   /* locking exclusive */
   ops = _test(TEST_RUN_TIME, CONFIG_EXLUSIVE_LOCK, 0, &time_spent);
   print_test_results(ops, time_spent, "exclusive_lock");
@@ -195,37 +195,20 @@ int run_a_test() {
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
   ops = _test(TEST_RUN_TIME, config_buffer, 0, &time_spent);
   print_test_results(ops, time_spent, "synchronouf_off_and_journal_off");
-  /* synchronous_off + jounrnal_off + vacum_off */
+  /* synchronous_off + jounrnal_off + exclusive_lock */
   strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
-  strcat(config_buffer, CONFIG_VACUM_OFF);
-  ops = _test(TEST_RUN_TIME, config_buffer, 0, &time_spent);
-  print_test_results(ops, time_spent,
-                     "synchronouf_off_and_journal_off_and_vacuum_off");
-  /* synchronous_off + jounrnal_off + vacum_off + exclusive_lock */
-  strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
-  strcat(config_buffer, CONFIG_JOURNAL_OFF);
-  strcat(config_buffer, CONFIG_VACUM_OFF);
   strcat(config_buffer, CONFIG_EXLUSIVE_LOCK);
   ops = _test(TEST_RUN_TIME, config_buffer, 0, &time_spent);
   print_test_results(ops, time_spent,
-                     "synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock");
+                     "synchronouf_off_and_journal_off_and_exclusive_lock");
   /* synchronous_off + jounrnal_off + vacum_off + exclusive_lock + 1000 ops in transaction */
   strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
   strcat(config_buffer, CONFIG_JOURNAL_OFF);
-  strcat(config_buffer, CONFIG_VACUM_OFF);
   strcat(config_buffer, CONFIG_EXLUSIVE_LOCK);
   ops = _test(TEST_RUN_TIME, config_buffer, 1000, &time_spent);
   print_test_results(ops, time_spent,
                      "synchronouf_off_and_journal_off_and_vacuum_off_and_exclusive_lock_1000_ops_in_transaction");
-  /* synchronous_off + jounrnal_wal + vacum_off + exclusive_lock + 1000 ops in transaction */
-  strcpy(config_buffer, CONFIG_SYNCHRONOUS_OFF);
-  strcat(config_buffer, CONFIG_JOURNAL_WAL);
-  strcat(config_buffer, CONFIG_VACUM_OFF);
-  strcat(config_buffer, CONFIG_EXLUSIVE_LOCK);
-  ops = _test(TEST_RUN_TIME, config_buffer, 1000, &time_spent);
-  print_test_results(ops, time_spent,
-                     "synchronouf_off_and_journal_wal_and_vacuum_off_and_exclusive_lock_1000_ops_in_transaction");
 }
 
 
