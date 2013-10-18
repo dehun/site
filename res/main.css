@@ -10,6 +10,11 @@ body {
     height: 80%;
 }
 
+/* code formating */
+pre {
+    margin-left: 50px;
+}
+
 code {
     font-family: "Courier New", Courier, monospace;
 }
