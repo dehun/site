@@ -18,7 +18,7 @@
 #define CONFIG_EXLUSIVE_LOCK "PRAGMA locking_mode = EXCLUSIVE;"
 
 
-#define TEST_RUN_TIME 10      /* 20 minutes */
+#define TEST_RUN_TIME 20 * 60      /* 20 minutes */
 #define TEST_INSERT_PERCENTAGE 60
 #define TEST_SELECT_PERCENTAGE 30
 #define TEST_DELETE_PERCENTAGE 10
@@ -79,20 +79,20 @@ unsigned long _test(time_t time_to_run, const char* config,
     if (drop <= TEST_INSERT_PERCENTAGE) {
       /* perform insert */
       snprintf(buff, BUFFER_SIZE, "INSERT INTO t (t1, t2 ,t3) VALUES(%d, %d, %d);",
-               rand()%50000, rand()%50000, rand()%50000);
+               rand()%500, rand()%500, rand()%500);
       sqlite3_exec(db, buff, callback, 0, &error_message);
       CHECK_SQL_RESULT;
       ++inserts;
     } else if ((drop > TEST_INSERT_PERCENTAGE) && (drop <= TEST_INSERT_PERCENTAGE + TEST_SELECT_PERCENTAGE)) {
       /* perform select */
-      snprintf(buff, BUFFER_SIZE, "SELECT FROM t WHERE t%d = %d", rand()%3 + 1, rand()%50000);
+      snprintf(buff, BUFFER_SIZE, "SELECT FROM t WHERE t%d = %d", rand()%3 + 1, rand()%500);
       sqlite3_exec(db, buff, callback, 0, &error_message);
       CHECK_SQL_RESULT;
       ++selects;
     } else if ((drop > TEST_INSERT_PERCENTAGE + TEST_SELECT_PERCENTAGE)) {
       /* perofrm delete */
       snprintf(buff, BUFFER_SIZE, "DELETE FROM t WHERE t%d = %d",
-               1 + rand()%3, rand() % 50000);
+               1 + rand()%3, rand() % 500);
       sqlite3_exec(db, buff, callback, 0, &error_message);
       CHECK_SQL_RESULT;
       ++deletes;
