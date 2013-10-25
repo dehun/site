@@ -7,6 +7,10 @@ import subprocess
 
 import jinja2
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 logging.basicConfig(level=logging.INFO)
 
 TEMPLATES_DIR = "./templates/"
