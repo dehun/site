@@ -3,6 +3,7 @@ import os
 import shutil
 import glob
 import logging
+import datetime
 import subprocess
 
 import jinja2
@@ -24,11 +25,15 @@ def parse_article_filename(article_file):
         re.search(".+/((\d\d)_([a-z]{3})_(\d\d\d\d)-(.+)).md",
                   article_file).groups()
     title = title.replace('_', ' ')
+
+    date = datetime.datetime.strptime("%s%s%s" % (year, month, day), "%Y%b%d")
+
     return {'name': name,
             'day': day,
             'month': month,
             'year': year,
-            'title': title}
+            'title': title,
+            'date': date}
 
 
 def html_from_markdown_file(markdown_file):
@@ -54,13 +59,17 @@ def generate_page_for_article(article_file):
 
 def generate_index_page_for_articles(articles):
     # sort articles by date
-    sorted_articles = articles[:]
-    # TODO: implement sorting of articles here
+    articles.sort(key=lambda a: parse_article_filename(a)["date"],
+                  reverse=True)
     # render them to template
     logging.info("generating index file")
 
+    for a in articles:
+        print parse_article_filename(a)["date"]
+        print a
+
     rendered_index = templates.get_template('articles_index.html').render(
-        articles=[parse_article_filename(a) for a in sorted_articles])
+        articles=[parse_article_filename(a) for a in articles])
 
     with open('./static/articles.html', 'w') as index_out:
         index_out.write(rendered_index)
