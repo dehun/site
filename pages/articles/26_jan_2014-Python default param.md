@@ -39,6 +39,7 @@ Lest change our foo.py a bit and then execute it:
 
 
 output:
+
 	making list
 	['bar']
 	['bar', 'bar']

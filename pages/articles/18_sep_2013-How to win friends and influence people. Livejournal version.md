@@ -1,15 +1,16 @@
 # How to win friends and influence people. Livejournal version #
 ## History ##
 Almost 4 years ago I have lost my job in Vogster entertainment and decided to write some blog promotion software just for fun and some small profit.
-The main idea was to make a blog with target audience.
+The main idea was to make a blog with target audience.  
 I used it for a while and then abandon. Few monthes ago I get the project from my archive and launched it again - and it still works :)
 
 ## Abstract ##
-How can we get audience in livejournal.com - people should friend us. But they should find us first.
-We can participate in different 'friend me please' lists. But this will not give us target auditory.
-By target auditory I mean for example photographers.
+How can we get audience in livejournal.com - people should friend us. But they should find us first.  
+We can participate in different 'friend me please' lists. But this will not give us target auditory.  
+By target auditory I mean for example photographers.  
 
 So we have 2 problems:
+
 * Find people which are target auditory.
 * Make that people to subscribe to our journal(friend us).
 
