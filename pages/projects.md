@@ -1,9 +1,22 @@
 # Projects #
+## xboomx ##
+[sources (python)](https://bitbucket.org/dehun/xboomx/)
+
+xboomx is wrapper around the dmenu. It is also a launcher. All the things it done is just sorting commands to launch according to their launch frequency.
+In other words - if you launch emacs and lxterminal all the time - they will appear in the list of commands first.
+
+[project wiki](https://bitbucket.org/dehun/xboomx/wiki/Home)
+
 ## kissbang ##
 [sources (erlang)](https://bitbucket.org/dehun/kissbang/)
 
 This is almost finished erlang social game server. It supports 3 social russian platforms vk.com, odnoklasniki.ru, moimir.ru.
 I wrote a set of articles about the architecture of this projects. Check the [articles](articles.html) page.
+
+## emacs configuration ##
+[sources (elisp)](https://bitbucket.org/dehun/dotemacs/)
+
+My emacs configuration files. You can get some things from it for your .emacs.
 
 ## protogen ##
 [sources (python)](https://bitbucket.org/dehun/protogen/)
@@ -13,14 +26,6 @@ and you describe with this DDL all the messages you wanna to have in protocol.
 Protogen takes this source in DDL and generates the code for serialization/deserialization/handling of this messages.
 Currently supported languages are python and erlang. Messages are encoded into json.
 The project is kinda abandoned due to time lack.
-
-## xboomx ##
-[sources (python)](https://bitbucket.org/dehun/xboomx/)
-
-xboomx is wrapper around the dmenu. It is also a launcher. All the things it done is just sorting commands to launch according to their launch frequency.
-In other words - if you launch emacs and lxterminal all the time - they will appear in the list of commands first.
-
-[project wiki](https://bitbucket.org/dehun/xboomx/wiki/Home)
 
 ## lj frenzy ##
 [sources (perl, sql)](https://bitbucket.org/dehun/ljfrenzy/)
