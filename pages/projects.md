@@ -1,4 +1,15 @@
 # Projects #
+## eyes\_on\_me ##
+[sources (python)](https://bitbucket.org/dehun/eyes_on_me/)
+
+eyes\_on\_me is open source project. It's aim is to save your eyes by auto adjusting level of backlight and
+white balance of the screen. The main difference from x.flux and redshift is that it can use two adjustment strategies
+
+* webcam
+* time of day
+
+In webcam mode it gets the information about light conditions by measuring light conditions with your webcam(very suitable for laptops).  
+
 ## xboomx ##
 [sources (python)](https://bitbucket.org/dehun/xboomx/)
 
