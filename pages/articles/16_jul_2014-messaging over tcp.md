@@ -72,3 +72,6 @@ Take a look at next projects:
 - [Apache Thrigt](https://thrift.apache.org/) - in case you need RPC like communications
 - [RakNet](http://www.jenkinssoftware.com/) - this is udp game oriented library. But it is awesome
 
+### Fixed size messages ###
+One of the less flexible solutions, but the simpliest to implements.  
+Just set all messages size to be equal. For example 64b. This works great when your messages are simple.  
