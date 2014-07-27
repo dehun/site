@@ -1,6 +1,6 @@
 # Emacs offline documentation(boost, stl, python) with cppman, anything and emacs #
 ## Intro ##
-I habe been always keeping optimizing my coding practices.  
+I have always tried to optimize my coding practices.
 And the usual stopper to coding is when you switch your focus.  
 And when you are going to look at some api documentation - you usualy switch to a browser.  
 So I was wondering can we integrate c++ stl and boost documentation into emacs?
