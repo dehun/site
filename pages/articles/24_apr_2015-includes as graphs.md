@@ -29,6 +29,10 @@ It also have a nice one python bindings.
 
 ## Putting it all together ##
 ### Source code ###
+You can obtain source code from bitbucket  
+https://bitbucket.org/dehun/cpp_dependencies/src
+
+Or you can read it below  
 
     import re
     import os
@@ -131,13 +135,20 @@ It also have a nice one python bindings.
     if __name__ == '__main__':
         main()
 
+### Usage ###
+The script accepts list of files in stdin.
 
+    find /path/to/your/project -name "*.h" > my_project_files.list
+    find /path/to/your/project -name "*.cpp" > my_project_files.list
+    cat my_project_files.list | python cpp_dependencies.py
+    
 ### Some notes ###
 
 * I have used multiprocessing for faster files parsing.
 * For faster saving into database please go to web interface and create schema/index for cppfile.name
 * It prints leaderboard of cummulative in vertices(some kind of vertex centricity)
 * You will need to do `pip install pyorient`
+
 
 ## Playing with the orientdb ##
 Go to web interface and choose graph.  
