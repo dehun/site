@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% set title = Presentations %}
+{% block content %}
+<h1>Presentations</h1>
+<ul>
+{% for presentation in presentations %}
+  <li><a href="presentations/{{presentation}}.html">{{presentation}}</a></li>
+{% endfor %}
+<ul>
+{% endblock %}
