@@ -172,27 +172,27 @@
           <pre>
             <code class="c++">
 // somewhere in the function
-&#35;define FINDTYPES1(t1) (types.find(t1) != types.end())
-&#35;define FINDTYPES2(t1,t2) ((types.find(t1) != types.end()) \
-                               || (types.find(t2) != types.end()))
-if((FINDTYPES2("node", "nodes") && cmshdevice-&gt;isNode()) ||
-   (FINDTYPES2("slavenode", "slavenodes") && cmshdevice-&gt;isSlaveNode()) ||
-   (FINDTYPES2("physicalnode", "physicalnodes") && cmshdevice-&gt;isPhysicalNode()) ||
+&#35;define FINDTHINGS1(t1) (things.find(t1) != things.end())
+&#35;define FINDTHINGS2(t1,t2) ((things.find(t1) != things.end()) \
+                               || (things.find(t2) != things.end()))
+if((FINDTHINGS2("apple", "apples") && fruid-&gt;isApple()) ||
+   (FINDTHINGS2("banana", "bananas") && fruit-&gt;isBanana()) ||
+   (FINDTHINGS2("orange", "oranges") && fruit-&gt;isOrange()) ||
 // .....
-&#35;undef FINDTYPES1
-&#35;undef FINDTYPES2
+&#35;undef FINDTHINGS1
+&#35;undef FINDTHINGS2
             </code>
           </pre>
           <!-- sample -->
           <pre class="fragment">
             <code class="c++">
 // somewhere in the function
-auto findtypes = [&](const auto &t1, const auto &t2) {
-  return types.find(t1) != types.end() || (types.find(t2) != types.end());
+auto findthings = [&](const auto &t1, const auto &t2) {
+  return things.find(t1) != things.end() || (things.find(t2) != things.end());
 };
 
-if ((findtypes("node", "nodes") && cmshdevice-&gt;isNode()) ||
-    (findtypes("slavenode", "slavenodes") && cmshdevice-&gt;isSlaveNode()) ||
+if ((findthings("apple", "apples") && fruit-&gt;isApple()) ||
+    (findthings("banana", "bananas") && fruit-&gt;isBanana()) ||
 // ...
             </code>
           </pre>
@@ -202,13 +202,13 @@ if ((findtypes("node", "nodes") && cmshdevice-&gt;isNode()) ||
         <section>
           <pre>
             <code class="c++">
-changed = writePxeFile(templateFile, pxeFile + ".openstack", replace) || changed;
+changed = writeSomething(templateFile, filepath + ".some_ext", replace) || changed;
             </code>
           </pre>
 
           <pre class="fragment">
             <code class="c++">
-changed |= writePxeFile(templateFile, pxeFile + ".openstack", replace);
+changed |= writeSomething(templateFile, filepath + ".some_ext", replace);
             </code>
           </pre>
         </section>
@@ -218,18 +218,18 @@ changed |= writePxeFile(templateFile, pxeFile + ".openstack", replace);
           <pre>
             <code class="c++">
 // inside very long one function
-HIST_ENTRY **hlist = history_list();
+HIST_ENTRY **history_list = get_history_list();
 
-if(hlist) {
-  size_t changed = 0;
+if(history_list) {
+  size_t changed_count = 0;
 
-  for(size_t i = 0; hlist[i]; ++i) {
-    if(hlist[i]-&gt;timestamp) continue;
-    free_history_entry(replace_history_entry(i, hlist[i]-&gt;line, NULL));
-    ++changed;
+  for(size_t i = 0; history_list[i]; ++i) {
+    if(history_list[i]-&gt;timestamp) continue;
+    free_history_entry(replace_history_entry(i, history_list[i]-&gt;line, NULL));
+    ++changed_count;
   }
 
-  if(changed &gt; 0) write_history(historyfile.c_str());
+  if(changed_count &gt; 0) write_history(historyfile.c_str());
 }
             </code>
           </pre>
