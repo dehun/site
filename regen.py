@@ -75,6 +75,24 @@ def generate_index_page_for_articles(articles):
         index_out.write(rendered_index)
 
 
+def parse_presentation_filename(filename):
+    return os.path.splitext(os.path.basename(filename))[0]
+
+
+def generate_index_page_for_presentations(presentations):
+    rendered_index = templates.get_template('presentations_index.html').render(
+        presentations=[parse_presentation_filename(p)
+                      for p in presentations])
+    with open('./static/presentations.html', 'w') as index_out:
+        index_out.write(rendered_index)
+
+
+def regen_pages_from_presentations():
+    # generating index
+    presentations = glob.glob("./res/presentations/*.html")
+    generate_index_page_for_presentations(presentations=presentations)
+
+
 def regen_pages_from_articles():
     # prepare dirs
     os.mkdir("./static/articles/")
@@ -133,6 +151,8 @@ def main():
     generate_info_pages()
     # articles
     regen_pages_from_articles()
+    # presentations
+    regen_pages_from_presentations()
     # put the resources into static
     prepare_resources()
 
