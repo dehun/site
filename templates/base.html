@@ -2,36 +2,51 @@
   <head>
     <link rel="stylesheet" type="text/css" href="/main.css">
 
-    <link rel="stylesheet" href="/highlight.js/styles/zenburn.css">
+    <link rel="stylesheet" href="/highlight.js/styles/ir_black.css">
     <script src="/highlight.js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <title>Yuriy Netesov. .:: {{ title }} ::.</title>
   </head>
   <body>
-    <div id="sidepanel">
-      <div id="about">
-       <h2>Yuriy Netesov</h2>
+
+    <div id="page">
+      <div id="header">
+        <h1 id="title">Some cool title!!!</h1>
+        <h2 id="subtitle">Yuriy Netesov on programming and stuff</h2>
+        <div id="menu-box">
+          <ul id="menu">
+            <li class="menu-item"><div class="menu-item"><a href="/about.html" class="menu-item">About</a></div></li>
+            <li class="menu-item"><div class="menu-item"><a href="/projects.html" class="menu-item">Projects</a></div></li>
+            <li class="menu-item"><div class="menu-item"><a href="/presentations.html" class="menu-item">Presentations</a></div></li>
+            <li class="menu-item"><div class="menu-item"><a href="/articles.html" class="menu-item">Blog</a></div></li>
+            <li class="menu-item"><div class="menu-item"><a href="/hire.html" class="menu-item">Hire me</a></div></li>
+          </ul>
+        </div>
       </div>
-      <div id="menu">
-        <ul>
-          <li><a href="/about.html" class="menu_item">About me</a></li>
-          <li><a href="/projects.html" class="menu_item">Projects</a></li>
-          <li><a href="/presentations.html" class="menu_item">Presentations</a></li>
-          <li><a href="/articles.html" class="menu_item">Blog</a></li>
-          <li><a href="/hire.html" class="menu_item">Hire me</a></li>
-        </ul>
+
+      <div id="content">
+        {% block content %}{% endblock %}
       </div>
-      <div id="contacts">
-        <h3>Contact me</h3>
-        <ul>
-          <li><a href="http://ua.linkedin.com/in/ynetesov" >linked in</a>
-          <li><a href="mailto: yuriy.netesov@gmail.com" >email: yuriy.netesov@gmail.com</a></li>
-          <li><a href="skype:yurii_netesov?chat">skype: yurii_netesov</a></li>
-        </ul>
+
+      <div id="footer-box">
+        <div id="copyright-box">
+          Copyright Yuriy Netesov. All information here is my opinion, and is unrelated to any of my employers.
+        </div>
+        <div id="contacts-box">
+          <ul id="footer">
+            <li class="footer-item">
+              <a href="http://ua.linkedin.com/in/ynetesov" >linked in</a>
+            </li>
+            <li class="footer-item">
+              <a href="mailto: yuriy.netesov@gmail.com" >yuriy.netesov@gmail.com</a>
+            </li>
+            <li class="footer-item">
+              <a href="skype:yurii_netesov?chat">yurii_netesov</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div id="content">
-      {% block content %}{% endblock %}
+
     </div>
 
 
