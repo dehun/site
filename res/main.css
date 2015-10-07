@@ -85,7 +85,6 @@ p {
     position: absolute;
     right: 0;
     override: visible;
-    display: table;
 }
 
 li.menu-item {
