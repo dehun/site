@@ -1,8 +1,8 @@
 /* body */
 body {
     font-family: "Inconsolata";
-    background-color: #132313;
-    color: #dcdcdc;
+    background-color: #23211d;
+    color: #34312c;
     font-size: 100%;
     height: 100%;
     margin: 0;
@@ -23,7 +23,7 @@ code {
 /* headers */
 h1 {
     font-family: "Impact";
-    color: #eaf7d9;
+    color: #23211d;
     font-size: 250%;
     font-style: bold;
 }
@@ -49,7 +49,7 @@ p {
 }
 
 #page {
-    background-color: #0c1801;
+    background-color: #34312c;
 	min-height:100%;
 	position:relative;
     width: 68%;
