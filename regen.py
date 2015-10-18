@@ -130,9 +130,6 @@ def generate_info_pages():
     with open('./static/hire.html', 'w') as hire_out:
         hire_out.write(rendered_about)
 
-    # make a link from about to index
-    os.link("static/about.html", "static/index.html")
-
 
 def prepare_resources():
     logging.info("preparing resources")
@@ -155,6 +152,8 @@ def main():
     regen_pages_from_presentations()
     # put the resources into static
     prepare_resources()
+    # make a link from about to index
+    os.link("static/articles.html", "static/index.html")
 
 
 if __name__ == '__main__':
