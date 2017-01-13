@@ -39,16 +39,20 @@ What if one node goes down? Well, the simply solution will be to store a value u
 Then we can query with both hashes and process the first reply. The constraint exists however that those 2 hashes should not fall under single node key subspace.
 We can create a subdivision function like this
 first node is as usual
+
 ```
     nodeIndex == key % amountOfNodes
 ```
+
 second hash is ensures other node 
+
 ```
     nodeIndex == (key + 1) % amountOfNodes
 ```
 
 
 ## Implementation ##
+
 ```
 object DhtBehaviour extends {
   object Messages {
@@ -136,8 +140,9 @@ object DhtBehaviour extends {
   }
 }
 ```
+
 ## Source code ##
-[source code](https://github.com/dehun/distributed-course)
+[view source code at github](https://github.com/dehun/distributed-course)
 
 
 
