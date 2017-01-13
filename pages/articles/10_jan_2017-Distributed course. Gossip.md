@@ -16,12 +16,12 @@ TBD
 
 ## Examples ##
 You and your friends decide to build an address book with all addresses.
-However you know only address of few of your friends. 
+However you know only address of few of your friends.
 All of you agree to use regular mail. Letters can be lost.
-So you decide that every day you will send to all known addresses list of addresses which that address does not know yet. You consider address A to know address B only in case when address A sends you explicitly that it knows address B. When you receive an acknowledgement you mark in your journal that ackowledger knows what he acknowledged. Then when it's time to send messages you send only what that node does not know (according to journal), but what you do know. At some moment nodes will discover each other and there are will be no more messages to send. However it is impossible to tell when this happened from single node perspective. 
+So you decide that every day you will send to all known addresses list of addresses which that address does not know yet. You consider address A to know address B only in case when address A sends you explicitly that it knows address B. When you receive an acknowledgement you mark in your journal that ackowledger knows what he acknowledged. Then when it's time to send messages you send only what that node does not know (according to journal), but what you do know. At some moment nodes will discover each other and there are will be no more messages to send. However it is impossible to tell when this happened from single node perspective.
 
 ## Implementation ##
-```
+
     class ReliableGossipBehaviour(val initialNodes:Set[Node.NodeId]) extends NodeBehaviour {
     var knowledge:Map[Node.NodeId, Set[Node.NodeId]] = Map()
 
@@ -53,10 +53,10 @@ So you decide that every day you will send to all known addresses list of addres
       })
     }
   }
-  ```
+
 
 ## Test example ##
-```
+
   it should "gossiping over unreliable channel requires different approach. spanning tree" in {
     def spawnNode(name:String, knows:Set[String]) = new Node(name,
       new DroppingChannel(new ReliableChannel(),Stream.iterate(Random.nextBoolean())((_:Boolean) => Random.nextBoolean())), // 50% chance of drop
@@ -87,7 +87,7 @@ So you decide that every day you will send to all known addresses list of addres
     cluster.tick(501)
     assert (Messages.Gossip.instantiations === previousMessagesCount)
   }
-```
+
 
 ## Source code ##
 [source code](https://github.com/dehun/distributed-course)
