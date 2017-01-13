@@ -112,10 +112,11 @@ a.menu-item:link, a.menu-item:visited, a.menu-item:hover {
 }
 
 #content {
-    width: 100%;
+    width: 80%;
     padding-top: 200px;
     padding-bottom: 150px;
     padding-left: 25px;
+    margin: 0 auto;
 }
 
 #footer-box {
