@@ -3,45 +3,45 @@
 Double phase commit is one of the most popular distributed commit/consensus agreement algorithms.
 
 ## Basics ##
-2pc has a coordinator and acceptor role. 
-Coordinator initiates the transaction by asking all the acceptors. 
+2pc has a coordinator and acceptor role.
+Coordinator initiates the transaction by asking all the acceptors.
 The acceptors then reply with Yes or No. In case if all acceptors voted yes - coordinator sends commit to all acceptors. In case if at least one acceptor send No - coordinator sends Fail to all acceptors.
 2pc ensures that all nodes will have the same value after execution.
 
 ## Illustrated ##
 Accepting proposal
-```
-  coordinator                     acceptor1           acceptor2
-      |          propose(value)      |                    |
-      +----------------------------->+                    |
-      |                              |   propose(value)   |
-      +-------------------------------------------------->+
-      |          accept()            |                    |
-      +<-----------------------------+                    |
-      |          accept()            |                    |
-      +<--------------------------------------------------+
-      |          commit              |                    |
-      +----------------------------->+                    |
-      |          commit              |                    |        
-      +-------------------------------------------------->+
-```
+
+      coordinator                     acceptor1           acceptor2
+          |          propose(value)      |                    |
+          +----------------------------->+                    |
+          |                              |   propose(value)   |
+          +-------------------------------------------------->+
+          |          accept()            |                    |
+          +<-----------------------------+                    |
+          |          accept()            |                    |
+          +<--------------------------------------------------+
+          |          commit              |                    |
+          +----------------------------->+                    |
+          |          commit              |                    |
+          +-------------------------------------------------->+
+
 
 Rejecting proposal
-```
-  coordinator                     acceptor1           acceptor2
-      |          propose(value)      |                    |
-      +----------------------------->+                    |
-      |                              |   propose(value)   |
-      +-------------------------------------------------->+
-      |          accept()            |                    |
-      +<-----------------------------+                    |
-      |          reject()            |                    |
-      +<--------------------------------------------------+
-      |          cancel              |                    |
-      +----------------------------->+                    |
-      |          cancel              |                    |
-      +-------------------------------------------------->+
-```
+
+      coordinator                     acceptor1           acceptor2
+          |          propose(value)      |                    |
+          +----------------------------->+                    |
+          |                              |   propose(value)   |
+          +-------------------------------------------------->+
+          |          accept()            |                    |
+          +<-----------------------------+                    |
+          |          reject()            |                    |
+          +<--------------------------------------------------+
+          |          cancel              |                    |
+          +----------------------------->+                    |
+          |          cancel              |                    |
+          +-------------------------------------------------->+
+
 
 
 ## Examples ##

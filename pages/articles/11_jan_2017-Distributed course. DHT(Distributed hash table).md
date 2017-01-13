@@ -13,7 +13,6 @@ The simpliest one is
 
     nodeIndex == key % amountOfNodes
 
-
 Lets say we have cluster of 3 dht nodes.
 
 - the value with key 0 will be stored at first node
