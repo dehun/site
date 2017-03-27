@@ -1,4 +1,29 @@
 # Projects #
+
+## hurtmeplenty.space ##
+[http://hurtmeplenty.space](http://hurtmeplenty.space)
+Quake Live matchmaking and on demand server hosting.
+Scala, Akka, Play framework, jquery, zeromq, react, ...
+
+## split-that-bill.com ##
+[http://split-that-bill.com](http://split-that-bill.com)
+A small expenses calculator for group of people. Was written for fun and as excercise in ReactJs.
+
+## distribued course ##
+[sources](https://github.com/dehun/distributed-course)
+Scala. A small distributed system emulator with various algorithms implementations
+
+- double phase commit
+- three phase commit
+- bully
+- circle leader election
+- raft
+- etc ...
+
+## allesgif.com ##
+[http://allesgif.com](http://allesgif.con)
+Website with gifs collection and search. Python, django, jquery, mysql, selenium, ...
+
 ## eyes\_on\_me ##
 [sources (python)](https://bitbucket.org/dehun/eyes_on_me/)
 
@@ -61,3 +86,12 @@ Maybe the most interesting thing is that fact that it is completly static for pe
 
 Simple tcp/udp port forwarder. Written just for fun & for traversing through one bad company's traffic shaper.
 Tested under linux.
+
+## flatline ##
+[sources (assembly + c++)](https://bitbucket.org/dehun/flatline)
+An antivirus I wrote back in school with x86-386 emulator (in order to detect packed with upx viruses for example).
+
+
+## dehumanizer ##
+[sources (assembly)](https://bitbucket.org/dehun/dehumanizer)
+An PE 32bit(Portable Executable) crypter with uncrypter before OEP.
