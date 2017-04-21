@@ -101,6 +101,6 @@ When client arrives you calculate pings from 3 triangulator slaves to that clien
 ## Related publications ##
 After I have finished the experiment I decided to take a look what other people have done in this area.
 
-[Wikipedia/Triangulation](https://en.wikipedia.org/wiki/Triangulation)
-[IBM technology echo-location](http://www.webopedia.com/TERM/P/ping_triangulation.html)
-[StackExchange related question](https://electronics.stackexchange.com/questions/68619/triangulate-with-ping)
+* [Wikipedia/Triangulation](https://en.wikipedia.org/wiki/Triangulation)
+* [IBM technology echo-location](http://www.webopedia.com/TERM/P/ping_triangulation.html)
+* [StackExchange related question](https://electronics.stackexchange.com/questions/68619/triangulate-with-ping)
