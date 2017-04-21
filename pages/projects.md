@@ -1,8 +1,14 @@
 # Projects #
 
+## triping experiment ##
+Triangulation with pings to obtain ping between 2 servers.   
+Sources are at [http://bitbucket.org/dehun/triping](http://bitbucket.org/dehun/triping)  
+See my article at [20_apr_2017-Triangulation with ICMP pings.html](http://dehun.space/articles/20_apr_2017-Triangulation%20with%20ICMP%20pings.html)
+Scala, Akka, Play framework
+
 ## hurtmeplenty.space ##
 [http://hurtmeplenty.space](http://hurtmeplenty.space)
-Quake Live matchmaking and on demand server hosting.
+Quake Live matchmaking and on demand server hosting.  
 Scala, Akka, Play framework, jquery, zeromq, react, ...
 
 ## split-that-bill.com ##
