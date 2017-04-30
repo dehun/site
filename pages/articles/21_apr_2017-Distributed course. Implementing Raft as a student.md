@@ -101,7 +101,7 @@ Every log entry contains
 - value - user payload, is not used by Raft
 
 Raft maintains a very important property - if log entry index and term are the same in 2 logs then these logs are consistent (equal) up to the entry index.
-This property is checked during the vote and during log replication - so we always elect a leader with consistent log. 
+This property is checked during the vote and during log replication - so we always elect a leader with consistent (to the majority) log. 
 AppendEntries fails if this property does not holds.
 There are plenty of indexes used in paper. Lets take a look at them
 
@@ -124,9 +124,26 @@ Leader initializes all nextIndexes to commitIndex and starts replication by issu
 When call returns with failure - leader decrements appropriate nextIndex and retries again. 
 When it succeds then we can setup a matchIndex - it will be the same as nextIndex + length (entries) where rpc call succeeded. 
 
-## Conclusion ##
+## Raft and CAP ##
+Original paper talks about log consensus for replicated state machines. CAP however talks about client request handling.
+Lets say we use that state machines to store key/value pairs. And log contains operations like 
+
+    set x 5
+    set y 10
+        
+If client outside the Raft wants to modify some key/value pair it should push a new log entry to the Raft leader.
+Leader will then propagate this entry to the followers.
+Leader can answer client with success only when it has commited this log entry (replicated to majority).
+So our set operation in this scenario is CP. 
+
+Get request from client for some key/value pair can not be served by leader only if we want data to be the newest.
+The get request should also go into the log and be replicated into followers. Because it can be that leader already not a real leader, and just has not observed a new term yet.
+This is how sync read in ZooKeeper works for example - sync read causes a write with no data to be performed.
+
+## Outro ##
 Raft was quite an interesting challenge that required plenty of reading apart from the Raft paper itself.
-I hope one day I will implement something like this in production system gaining more experience to share.
+My understanding of Raft and distributed systems improved a lot during this excercise. However there are still plenty of things I have missed or deliberately ommited.
+I hope one day I will implement something like this in production system gaining more experience/understanding to share.
 
 ## References ##
 - [Raft visualization](http://thesecretlivesofdata.com/raft/)
