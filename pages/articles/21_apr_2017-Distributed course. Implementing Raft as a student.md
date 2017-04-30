@@ -45,6 +45,9 @@ Then the log is consistent across majority.
 
 ### In practice ###
 Lets see how consensus problem arises in our day-to-day practical tasks.
+You can often see leader election required. For example see (this questions about zookeeper and hadoop)[http://stackoverflow.com/a/38325270]
+Or distributed locks service - see (Chubby paper)[https://research.google.com/archive/chubby.html].
+
 
 ## Synchronous systems ##
 Synchronous system are set of nodes connected via network.
