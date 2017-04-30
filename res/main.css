@@ -156,5 +156,5 @@ li.footer-item {
 
 a:link, a:visited, a:hover {
     color: #FFFFFF;
-    text-decoration: none;
+    /* text-decoration: none; */
 }
