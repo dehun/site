@@ -1,9 +1,9 @@
 # Distributed course. Implementing Raft as a student #
 ## Intro ##
-When I got interested in improving my knowledge about distributed systems my friend gave me a briliant advice - "just implement something, raft for example".
+When I got interested in improving my knowledge about distributed systems my friend gave me a brilliant advice - "just implement something, raft for example".
 I got a paper about Raft and was quite confused - I have not understood a problem algorithm was intended to solve.
 For me it was necessary to go through some other papers before Raft paper to understand the problem and the solution.
-The target was to implement Raft as a student in unversity will do it - not a production ready solution, but solution good enough to understand the algorithm.
+The target was to implement Raft as a student in university will do it - not a production ready solution, but solution good enough to understand the algorithm.
 You can see the results here - [https://github.com/dehun/distributed-course/blob/master/src/9main/scala/algorithms/RaftBehaviour.scala](https://github.com/dehun/distributed-course/blob/master/src/main/scala/algorithms/RaftBehaviour.scala). It is implemented in emulator in which I have also implemented some other algorithms described in this articles series.
 I have decided to write this article as a small helper for people who will go the same path.
 
@@ -18,7 +18,7 @@ At that moment I did not understand next things:
 - solution applications
 
 ## Consensus problem ##
-The original Raft paper requires familarity with consensus problem. 
+The original Raft paper requires familiarity with consensus problem. 
 I have found that it is described best at ["Paxos made simple"](https://www.microsoft.com/en-us/research/publication/paxos-made-simple/) paper.
 
 ### Theoretical overview ###
@@ -56,7 +56,7 @@ The most important thing about synchronous systems is upper limit on message del
 We can safely state that in case if message has not arrived in X seconds then it was lost or never sent.
 
 ## Raft ##
-Raft is a solution for consesus problem in synchronous systems.
+Raft is a solution for consensus problem in synchronous systems.
 It utilizes timeouts to make use of upper limit on message delivery. 
 Also it uses leader election and logical timestamps.
 I will describe Raft only briefly here, focusing more on the obstacles that I have encountered.
@@ -82,22 +82,22 @@ Node can be in next states
 
 ### Leader election ###
 Leader election in Raft is timeout based and plays together with leader heartbeating with empty AppendEntries call.
-A normal healty leader every X seconds will send an empty AppendEntries call to other Raft nodes.
+A normal healthy leader every X seconds will send an empty AppendEntries call to other Raft nodes.
 If node has not received leader heartbeat withing Y seconds it concludes that leader has gone and starts a new term by starting Voting process.
 The node that started voting process is called candidate. 
 When it received votes from majority it concludes that it is a leader now and starts heartbeating.
 
 ### Term ###
 Term is just a logical timestamp of a vote. When candidate starts the vote it increases it's term by 1.
-Every rpc call in raft carries a current term to update a node. Node will reject any request with term lower than it's own.
-In case if term if bigger - it will update it's own term. When leader or candidate receives an rpc with higher term - it converts back to follower. 
-Lamports timestamps are important by themselfs. Understanding them also helps a lot to understand Raft terms.
-I have found that reading ["Time, Clocks, and the Ordering of Events in a Distributed System"](http://amturing.acm.org/p558-lamport.pdf) made it simplier to understand Raft.
+Every PRC call in raft carries a current term to update a node. Node will reject any request with term lower than it's own.
+In case if term if bigger - it will update it's own term. When leader or candidate receives an PRC with higher term - it converts back to follower. 
+Lamports timestamps are important by themselves. Understanding them also helps a lot to understand Raft terms.
+I have found that reading ["Time, Clocks, and the Ordering of Events in a Distributed System"](http://amturing.acm.org/p558-lamport.pdf) made it simpler to understand Raft.
 
 ### Log replication ###
 In Raft log is always replicated from leader to follower using AppendEntries RPC call.
 Empty AppendEntries RPC call carries no log items to replicate and is used to indicate that leader is still alive.
-Log item is considered to be commited only when it was successfully appended to majority of the followers.
+Log item is considered to be committed only when it was successfully appended to majority of the followers.
 Every log entry contains 
 - index - item position in log
 - term - at what term item was added
@@ -115,7 +115,7 @@ There are plenty of indexes used in paper. Lets take a look at them
 #### CommitIndex ####
 This one indicates the index of last commited entry on the leader. 
 When leader replicates an entry it updates a matchIndex. When the majority of matchIndexes get bigger than N then we can set commitIndex to N.
-commitIndex also gets updated on the followers - leader sends it via AppendEntries rpc call and if it's bigger than followers commit index - then follower updates its commit index to be the same as leaders commit index. 
+commitIndex also gets updated on the followers - leader sends it via AppendEntries PRC call and if it's bigger than followers commit index - then follower updates its commit index to be the same as leaders commit index. 
 
 #### MatchIndex ####
 matchIndex is per follower. It is  index where log of the leader and log of follower matches (term and index are the same).
@@ -125,7 +125,7 @@ When leader performs successfull AppendEntries call it updates a matchIndex.
 nextIndex is used by leader only and is index about starting at what log entry should we send log entries to follower.
 Leader initializes all nextIndexes to commitIndex and starts replication by issuing AppendEntries calls.
 When call returns with failure - leader decrements appropriate nextIndex and retries again. 
-When it succeds then we can setup a matchIndex - it will be the same as nextIndex + length (entries) where rpc call succeeded. 
+When it succeeds then we can setup a matchIndex - it will be the same as nextIndex + length (entries) where PRC call succeeded. 
 
 ## Raft and CAP ##
 Original paper talks about log consensus for replicated state machines. CAP however talks about client request handling.
@@ -136,7 +136,7 @@ Lets say we use that state machines to store key/value pairs. And log contains o
         
 If client outside the Raft wants to modify some key/value pair it should push a new log entry to the Raft leader.
 Leader will then propagate this entry to the followers.
-Leader can answer client with success only when it has commited this log entry (replicated to majority).
+Leader can answer client with success only when it has committed this log entry (replicated to majority).
 So our set operation in this scenario is CP. 
 
 Get request from client for some key/value pair can not be served by leader only if we want data to be the newest.
@@ -145,7 +145,7 @@ This is how sync read in ZooKeeper works for example - sync read causes a write 
 
 ## Outro ##
 Raft was quite an interesting challenge that required plenty of reading apart from the Raft paper itself.
-My understanding of Raft and distributed systems improved a lot during this excercise. However there are still plenty of things I have missed or deliberately ommited.
+My understanding of Raft and distributed systems improved a lot during this exercise. However there are still plenty of things I have missed or deliberately omitted.
 I hope one day I will implement something like this in production system gaining more experience/understanding to share.
 
 ## References ##
