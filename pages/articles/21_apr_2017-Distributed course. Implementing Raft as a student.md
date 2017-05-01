@@ -114,7 +114,7 @@ There are plenty of indexes used in paper. Lets take a look at them
 - nextIndex - at leader per follower - which entry from leader log to send next to the follower
 
 #### CommitIndex ####
-This one indicates the index of last commited entry on the leader. 
+This one indicates the index of last committed entry on the leader. 
 When leader replicates an entry it updates a matchIndex. When the majority of matchIndexes get bigger than N then we can set commitIndex to N.
 commitIndex also gets updated on the followers - leader sends it via AppendEntries PRC call and if it's bigger than followers commit index - then follower updates its commit index to be the same as leaders commit index. 
 
@@ -145,10 +145,11 @@ The get request should also go into the log and be replicated into followers. Be
 This is how sync read in ZooKeeper works for example - sync read causes a write with no data to be performed.
 
 ## Raft and FLP ##
-Raft sacrifices liveleness in case of asynchronous model. 
-We set leader election timeout with certain assumptions about upper limit of message delivery time.
-Raft can theoretically block forever in case if half of the nodes takes time longer to respond than configured timeout.
-Which means terms will just start without a leader - Raft will block.
+FLP result shows that there are no algorithm in asynchronous model that will not block forever in certain circumstances.
+Raft is not an exception. We set leader election timeout with certain assumptions about upper limit of message delivery time.
+Raft can theoretically block forever in case if half of the nodes take time longer to respond than configured timeout.
+Which means new terms will just start without a leader - Raft will block until all nodes will respond in time(which is not guaranteed in asynchronous model).
+In practice that means that we should configure Raft properly for particular environment/network.
 
 ## Outro ##
 Raft was quite an interesting challenge that required plenty of reading apart from the Raft paper itself.
