@@ -45,8 +45,8 @@ Then the log is consistent across majority.
 
 ### In practice ###
 Lets see how consensus problem arises in our day-to-day practical tasks.
-You can often see leader election required. For example see (this questions about zookeeper and hadoop)[http://stackoverflow.com/a/38325270]
-Or distributed locks service - see (Chubby paper)[https://research.google.com/archive/chubby.html].
+You can often see leader election required. For example see [this questions about zookeeper and hadoop](http://stackoverflow.com/a/38325270)
+Or distributed locks service - see [Chubby paper](https://research.google.com/archive/chubby.html).
 
 
 ## Synchronous systems ##
@@ -69,7 +69,7 @@ Majority plays important role in both these aspects
 - leader is elected only when majority voted for it
 
 Election and Replication are connected through the fact that leader with non-consistent log (with majority) can not be elected.
-Raft operates using only 2 RPC
+Raft operates using only 2 RPCs
 - AppendEntries - for log replication and heartbeating of a leader
 - Vote - to request vote for leader election
 
