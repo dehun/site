@@ -6,6 +6,7 @@ For me it was necessary to go through some other papers before Raft paper to und
 The target was to implement Raft as a student in university will do it - not a production ready solution, but solution good enough to understand the algorithm.
 You can see the results here - [https://github.com/dehun/distributed-course/blob/master/src/9main/scala/algorithms/RaftBehaviour.scala](https://github.com/dehun/distributed-course/blob/master/src/main/scala/algorithms/RaftBehaviour.scala). It is implemented in emulator in which I have also implemented some other algorithms described in this articles series.
 I have decided to write this article as a small helper for people who will go the same path.
+Beware though that this is student understanding of Raft, it will contain plenty of errors and misinterpretations.
 
 ## Path ##
 The entry point for understanding Raft seems to be the original paper ["In Search of an Understandable Consensus Algorithm"](https://raft.github.io/raft.pdf).
@@ -142,6 +143,12 @@ So our set operation in this scenario is CP.
 Get request from client for some key/value pair can not be served by leader only if we want data to be the newest.
 The get request should also go into the log and be replicated into followers. Because it can be that leader already not a real leader, and just has not observed a new term yet.
 This is how sync read in ZooKeeper works for example - sync read causes a write with no data to be performed.
+
+## Raft and FLP ##
+Raft sacrifices liveleness in case of asynchronous model. 
+We set leader election timeout with certain assumptions about upper limit of message delivery time.
+Raft can theoretically block forever in case if half of the nodes takes time longer to respond than configured timeout.
+Which means terms will just start without a leader - Raft will block.
 
 ## Outro ##
 Raft was quite an interesting challenge that required plenty of reading apart from the Raft paper itself.
