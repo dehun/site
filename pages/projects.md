@@ -2,12 +2,12 @@
 
 ## Moshpit ##
 Eventually consistent(AP) P2P REST service discovery. Built on top of Akka and uses vector clocks for synchronization.
-Sources are at (http://github.com/dehun/moshpit)[http://github.com/dehun/moshpit]. 
+Sources are at [http://github.com/dehun/moshpit](http://github.com/dehun/moshpit).
 Scala, Akka, Akka-Http, scalatest
 
 ## BCE ## 
 BlockChainExperiment is attempt to grasp how blockchain works by implementing our own.
-Sources are at (http://github.com/dehun/bce)[http://github.com/dehun/bce]. 
+Sources are at [http://github.com/dehun/bce](http://github.com/dehun/bce). 
 At the moment it copies bitcoin mostly, but we have plans to adjust PoW and implement some other interesting features.
 Haskell.
 
