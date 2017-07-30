@@ -1,5 +1,16 @@
 # Projects #
 
+## Moshpit ##
+Eventually consistent(AP) P2P REST service discovery. Built on top of Akka and uses vector clocks for synchronization.
+Sources are at (http://github.com/dehun/moshpit)[http://github.com/dehun/moshpit]. 
+Scala, Akka, Akka-Http, scalatest
+
+## BCE ## 
+BlockChainExperiment is attempt to grasp how blockchain works by implementing our own.
+Sources are at (http://github.com/dehun/bce)[http://github.com/dehun/bce]. 
+At the moment it copies bitcoin mostly, but we have plans to adjust PoW and implement some other interesting features.
+Haskell.
+
 ## triping experiment ##
 Triangulation with pings to obtain ping between 2 servers. 
 Sources are at [http://bitbucket.org/dehun/triping](http://bitbucket.org/dehun/triping)
@@ -7,8 +18,9 @@ See my article at [20_apr_2017-Triangulation with ICMP pings.html](http://dehun.
 Scala, Akka, Play framework
 
 ## hurtmeplenty.space ##
-[http://hurtmeplenty.space](http://hurtmeplenty.space)
 Quake Live matchmaking and on demand server hosting.
+Go try it at [http://hurtmeplenty.space](http://hurtmeplenty.space)
+
 Scala, Akka, Play framework, jquery, zeromq, react, ...
 
 ## split-that-bill.com ##
@@ -19,11 +31,11 @@ A small expenses calculator for group of people. Was written for fun and as exce
 [sources](https://github.com/dehun/distributed-course)
 Scala. A small distributed system emulator with various algorithms implementations
 
+- _raft_
 - double phase commit
 - three phase commit
 - bully
 - circle leader election
-- raft
 - etc ...
 
 ## allesgif.com ##
