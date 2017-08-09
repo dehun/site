@@ -9,7 +9,7 @@ Now we apply this idea to ping. We assume that ping is dependable on distance ma
 Lets see how far we can go with this assumption.
 
 ## Source code ##
-Scala implementation: [https://bitbucket.org/dehun/triping](https://bitbucket.org/dehun/triping)
+Scala implementation: [http://github.com/dehun/triping](http://github.com/dehun/triping)
 
 ## Design overview  ##
 I decided to make microservices using Scala and Akka.

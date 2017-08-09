@@ -28,7 +28,7 @@ The problem here is that nobody want's to add a person with 1000 one way friends
 The solution: unfriend person who don't friend you during 5 days from you friend him.
 
 ## Implementation ##
-[sources (perl, sql)](https://bitbucket.org/dehun/ljfrenzy/)
+[sources (perl, sql)](https://github.com/dehun/ljfrenzy/)
 
 At that time only one script language I was using for some time was a Perl.
 So I implement it in perl in a shell style - there are set of commands which are operating on one database.
