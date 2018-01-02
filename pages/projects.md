@@ -1,4 +1,10 @@
 # Projects #
+## Learn Functional Programming with Scala ##
+Functional programming course using scala language in learn-by-doing style.  
+Covers typeclasses, monoids, functors, applicatives, monads, free monad.  
+Sources are at [http://github.com/dehun/learnfp](http://github.com/dehun/learnfp).  
+Scala, scalatest
+
 ## Moshpit ##
 Eventually consistent(AP) P2P REST service discovery. Built on top of Akka and uses vector clocks for synchronization.
 Sources are at [http://github.com/dehun/moshpit](http://github.com/dehun/moshpit).
