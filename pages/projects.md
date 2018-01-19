@@ -1,8 +1,8 @@
 # Projects #
 ## Learn Functional Programming with Scala ##
 Functional programming course using scala language in learn-by-doing style.  
-Covers typeclasses, monoids, functors, applicatives, monads, free monad.  
-Sources are at [http://github.com/dehun/learnfp](http://github.com/dehun/learnfp).  
+Covers typeclasses, monoids, functors, applicatives, monads, co-functors, co-monads, free monad.  
+Sources are at [http://github.com/dehun/learn-fp](http://github.com/dehun/learn-fp).  
 Scala, scalatest
 
 ## Moshpit ##
