@@ -70,8 +70,9 @@ So we keep our monad transformers the same and change our functions to the next 
 
     { foo[AppStack](12) >>= bar[AppStack] }.runNetT(net).runDbT(db).runLogT(log).runIO()
 
-Mission accomplished - both `foo` and `bar` can see only needed parts of our AppStack and we(and compiler!) can now reason about side effects produced by each function.
+
 All we need to do now is to implement MonadLog, MonadDb and MonadNet instances for our AppStack.
+Mission accomplished - both `foo` and `bar` can see only needed parts of our AppStack and we(and compiler!) can now reason about side effects produced by each function.
 
 ## Further ideas ##
 Now we can easily test foo and bar without unleashing whole stack - all we need for testing of foo is some stack for which implicits for MonadLog and MonadDb are defined.
