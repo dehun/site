@@ -81,4 +81,4 @@ We can define those implicits to be stubs and easily test our methods.
 In part 2 we are going to explore second question - making "can produce side effect" to be "should produce side effect".
 
 ## Source code ##
-Full source code for this approach can be find at https://github.com/dehun/better-than-io
+Full source code for this approach can be find at [https://github.com/dehun/better-than-io]
