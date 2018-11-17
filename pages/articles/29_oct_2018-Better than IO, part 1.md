@@ -74,12 +74,12 @@ So we keep our monad transformers the same and change our functions to the next 
 All we need to do now is to implement MonadLog, MonadDb and MonadNet instances for our AppStack.
 Mission accomplished - both `foo` and `bar` can see only needed parts of our AppStack and we(and compiler!) can now reason about side effects produced by each function.
 
-## Further ideas ##
+## Testing ##
 Now we can easily test foo and bar without unleashing whole stack - all we need for testing of foo is some stack for which implicits for MonadLog and MonadDb are defined.
 We can define those implicits to be stubs and easily test our methods.
 
 ## Part 2 ##
-In part 2 we are going to explore second question - making "can produce side effect" to be "should produce side effect".
+In part 2 we are going to discuss why mtl approach is not good enough and propose an alternative.
 
 ## Source code ##
-Full source code for this approach can be find at [github:better-than-io](https://github.com/dehun/better-than-io)
+Full source code for this approach can be find at [github:better-than-io-mtl](https://github.com/dehun/better-than-io-mtl)
