@@ -81,7 +81,7 @@ In case if we "run" them - specializing them on the same monad - also no problem
     foo[IO](12) >>= bar[IO]
     
 This approach called tagless final. For now no explanation why, we have to understand few more things to understand the name.
-But we can perfectly use the approach without understandig it's name.
+But we can perfectly use the approach without understanding it's name.
     
 ## better than mtl ##
 So how is it better than mtl? My experience so far that it's way easier to implement and reason about. Especially for someone coming from OOP backgroung.
@@ -92,7 +92,7 @@ And we also don't have to write flatMap again and again for each transformer.
 
 ## wtf is algebra ##
 Algebra in this case is just set of objects and operations. It's just a way to describe your computation.
-In other words it's embeded dsl.
+In other words it's embedded dsl.
 
 ## testing ##
 Testing is straightforward. You don't have to use `IO` for testing, `Id` will be just fine.
