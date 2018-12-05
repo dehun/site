@@ -144,7 +144,7 @@ So in case if we want to pull something like this -
           user => LogAction.LogMsg(s"user age is ${user.age}")})})
     }
     
-It won't compile because function we pass to `DoAction.FlatMap[LogAction, Unit, Unit]` actually returns `DoAction.FlatMap[DbAction, Unit, Unit]`.
+It won't compile because function we pass to `DoAction.FlatMap[LogAction, Unit, Unit]` actually returns `DoAction.FlatMap[DbAction, Unit, Unit]`. And `LogAction` is not `DbAction`.
 
 As we saw previously we should make a sum type out of `DbAction` and `LogAction`. We can do this with `EitherK`. 
 
@@ -170,7 +170,7 @@ So lets use `Free` from `cats`.
 
     // same for net and log as above
 
-    def foo(x:Int) = for {
+    def foo(x:Int):Free[AppStack, user] = for {
         user <- Db.queryUser(x.toString).inject[AppStack]
         _ <- Log.logMsg(s"got user ${user}").inject[AppStack]
         _ <- Db.storeUser(user.copy(age=user.age + 1)).inject[AppStack]
@@ -181,10 +181,92 @@ So lets use `Free` from `cats`.
 We also get a `pure` function. Which deviates from our original target of not being able to fake side effects. 
 But I guess in this case road was way more interesting than the end result - we ended up with a new way to combine our programs. 
 
+## Running ##
+To run program we need interpreters. We get one for `EitherK[F[_], G[_], A]` for free as long as interpreters for both `F` and `G` are defined.
+
+Lets define one for database.
+
+    import cats.effect.IO
+    import cats.~>
+
+    class DbIoNat extends ~>[DbAction, IO] {
+      override def apply[A](fa: DbAction[A]): IO[A] = fa match {
+        case DbAction.QueryUser(userId) => IO {
+          Console.println(s"db: querying user $userId")
+          User(userId, "somebody", 32)
+        }
+
+        case DbAction.StoreUser(user) => IO {
+          Console.println(s"db: storing user $user")
+         }
+      }
+    }
+    
+Where `~>` is natural transformation from one functor to another.
+
+After we define transformations Db, Log and Net we are good to go - 
+
+    val logIoNat = new LogIoNat()
+    val dbIoNat = new DbIoNat()
+    val netIoNat = new NetIoNat()
+
+    val level0Nat = logIoNat.or(netIoNat)
+    val appStackNat = dbIoNat.or[Level0](level0Nat)
+
+    (foo(12) flatMap bar)
+      .foldMap(appStackNat)
+      .unsafeRunSync()
+    
+
 ## Produce subset of side effects? ##
 
-Can I tell what `foo` does by simply looking at the signature? __No__.
-We are going to improve on that in next part.
+Can I tell what `foo` does by simply looking at the signature? __No__.  
+I can't simple because it uses `AppStack` algebra that is set of all algebras combined with `EitherK`.
+We are going to solve this by defining needed subsets of algebras (through `EitherK`) and in the end injecting them into `AppStack`.
+Injecting into `AppStack` will require additional `InjectK` instance for `LogAndDb`, as they are in different `EitherK`s of AppStack.
+For `LogAndNet` we don't need one - it will be derived automatically, as it's same thing as `Level0`.
+
+    type Level0[A] = EitherK[LogAction, NetAction, A]
+    type AppStack[A] = EitherK[DbAction, Level0, A]
+
+    type LogAndDb[A] = EitherK[LogAction, DbAction, A]
+    def foo(x:Int):Free[LogAndDb, User] = for {
+      user <- Db.queryUser(x.toString).inject[LogAndDb]
+      _ <- Log.logMsg(s"got user ${user}").inject[LogAndDb]
+      _ <- Db.storeUser(user.copy(age=user.age + 1)).inject[LogAndDb]
+    } yield user
+
+    type LogAndNet[A] = EitherK[LogAction, NetAction, A]
+    def bar(user:User):Free[LogAndNet, Int] = for {
+      _ <- Log.logMsg("lets notify user change!").inject[LogAndNet]
+      _ <- Net.notifyUserChange(user).inject[LogAndNet]
+    } yield user.age
+
+    override def main(args: Array[String]): Unit = {
+      lazy val logIoNat = new LogIoNat()
+      lazy val dbIoNat = new DbIoNat()
+      lazy val netIoNat = new NetIoNat()
+
+      lazy val level0Nat = logIoNat.or(netIoNat)
+      lazy val appStackNat = dbIoNat.or[Level0](level0Nat)
+
+      implicit val logAndDbIntoAppStack = new InjectK[LogAndDb, AppStack] {
+        override def inj: ~>[LogAndDb, AppStack] = new ~>[LogAndDb, AppStack] {
+          override def apply[A](fa: LogAndDb[A]): AppStack[A] = fa match {
+            case EitherK(Left(act)) => InjectK[LogAction, AppStack].inj(act)
+            case EitherK(Right(act)) => InjectK[DbAction, AppStack].inj(act)
+          }
+        }
+
+        override def prj: ~>[AppStack, λ[α => Option[LogAndDb[α]]]] = ??? // not used
+      }
+
+      val r = (foo(12).inject[AppStack] flatMap (u => bar(u).inject[AppStack]))
+        .foldMap(appStackNat)
+        .unsafeRunSync()
+      Console.println(s"end result: $r")
+    }
+
 
 ## Source code ##
 You can find source code [here](https://github.com/dehun/better-than-io-free)
