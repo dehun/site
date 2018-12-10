@@ -163,7 +163,7 @@ See demo for details.
 ## eco-system ##
 Tagless final approach plays nicely with doobie, fs2 and http4s.
 
-## part 3 ## 
+## part 3 ##
 In [part 3](./03_dec_2018-Better than IO, part 3.html) we are going to answer second question - "must produce side effect".
 
 ## demo ##
