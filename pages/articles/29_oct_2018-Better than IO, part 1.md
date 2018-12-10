@@ -79,7 +79,7 @@ Now we can easily test foo and bar without unleashing whole stack - all we need 
 We can define those implicits to be stubs and easily test our methods.
 
 ## Part 2 ##
-In part 2 we are going to discuss why mtl approach is not good enough and propose an alternative.
+In [part 2](./15_nov_2018-Better than IO, part 2.html) we are going to discuss why mtl approach is not good enough and propose an alternative.
 
 ## Source code ##
 Full source code for this approach can be find at [github:better-than-io-mtl](https://github.com/dehun/better-than-io-mtl)

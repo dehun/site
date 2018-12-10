@@ -1,6 +1,6 @@
 # Better than IO, part 2 #
 ## intro ##
-In previous part we have discussed mtl approach. Lets see how can we improve on that.
+In [previous part](./29_oct_2018-Better%20than%20IO,%20part%201.html) we have discussed mtl approach. Lets see how can we improve on that.
 
 ## mtl drawbacks ##
 MTL is cumbersome - for any effect we should define an extra monad transformer. 
@@ -162,6 +162,9 @@ See demo for details.
 
 ## eco-system ##
 Tagless final approach plays nicely with doobie, fs2 and http4s.
+
+## part 3 ## 
+In [part 3](./03_dec_2018-Better than IO, part 3.html) we are going to answer second question - "must produce side effect".
 
 ## demo ##
 You can find source code at [github:better-than-io-tf](https://github.com/dehun/better-than-io-tf)

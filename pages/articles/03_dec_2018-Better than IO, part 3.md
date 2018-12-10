@@ -1,6 +1,6 @@
 # Better than IO, part 3 #
 ## intro ##
-In the first and second part we ensured that our little function can produce only desired subset of side effects.
+In the [first part](./29_oct_2018-Better than IO, part 1.html) and [second part](./15_nov_2018-Better%20than%20IO,%20part%202.html) we ensured that our little function can produce only desired subset of side effects.
 In here we are going to ensure that it's not only can, but it should.
 
 ## Should produce a side effect ##
