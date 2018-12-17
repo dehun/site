@@ -271,6 +271,9 @@ For `LogAndNet` we don't need one - it will be derived automatically, as it's sa
 ## Source code ##
 You can find source code [here](https://github.com/dehun/better-than-io-free)
 
+## Next ##
+In [next part](./17_dec_2018-Better than IO, part 4.html) we are going to lift other effects into `Free` monad.
+
 ## Further reading about free monad ##
 
 - [cats free monad tutorial](https://typelevel.org/cats/datatypes/freemonad.html)
