@@ -1,18 +1,26 @@
 # Better than IO, part 2 #
 ## intro ##
-In [previous part](./29_oct_2018-Better%20than%20IO,%20part%201.html) we have discussed mtl approach. Lets see how can we improve on that.
+In [previous part](./29_oct_2018-Better%20than%20IO,%20part%201.html) we have discussed mtl approach with stack of transformers. Lets see how can we improve on that.
 
-## mtl drawbacks ##
-MTL is cumbersome - for any effect we should define an extra monad transformer. 
-So in real world application we most likely will end-up with 10 monad transformers stacked together.  
+## part 1 drawbacks ##
+As you remember from [previous part](./29_oct_2018-Better%20than%20IO,%20part%201.html) we used to say that `Log`, `Db` and `Net` are monad transformers.
+And then we used MTL style approach to access parts of that transformets stack. E.g. `MonadLog`, `MonadDb` and `MonadNet`.
+While that can work, we also learned that it's also generating a lot of boilerplate for each of effect type we want to have.
+Mostly because we have to define that giant `AppStack` stack of monad transformers.
+This is cumbersome - for any effect we should define an extra monad transformer. 
+So in real world application we most likely will end-up with 10 monad transformers stacked together.
+And you have to define `map`/`pure`/`flatMap` for all of them. And also define how to access them - either using some automatic dereviation or manually.
 
-It does not come for free - each time we will need to wrap and unwrap our value into 10 layers of objects.
-That will introduce runtime performance penalty.  
+Performance wise it also does not come for free - each time we will need to wrap and unwrap our value into 10 layers of objects.
+That will introduce runtime performance penalty.
 
-Also implementing monad transformer every time is cumbersome. We don't have automatic deriviation for that stuff in cats/kitties.
-Apart from monad transformer itself (e.g. LogT) we should also define MonadLog type class. And write specialization for it for our target stack.
-As you can see in the example [github:better-than-io-mtl](https://github.com/dehun/better-than-io-mtl) it's far from being pretty and easy. It's extra boilerplate we will need to change every time we change the monad transformers stack.
-You can in theory implement some automatic thingy that will look at your stack and generate stuff. However if you look at how they did it in cats-mtl it's anything but easy.
+## optimizing that AppStack ##
+So far we have huge `AppStack` for every effect that we are handling in our program. And we also have this "accessors" to parts of that stack.
+E.g. `LogT` has corresponding `MonadLog`. And that `MonadLog` instance for `AppStack` knows how to produce `LogT` effects in that `AppStack`.
+What if we simplify that `AppStack` and give more power to that accessors typeclass instances?
+Logging does not need it's own `LogT`, all the logging can be easily done in the `IO`. 
+We can reduce our `AppStack` to be simply `IO`. And then define `MonadLog`, `MonadDb` and `MonadNet` instances for `IO`.
+Lets see how it will work out.
 
 ## subset of side effects, again ##
 So we want to declare our function to produce subset of side effects.
@@ -45,7 +53,7 @@ Our logger has method `def log(msg:String):IO[Unit]` and Db also has methods in 
 
     def foo[F[_]:Monad](implicit loggerAlg:LoggerAlg[F], db:DbAlg[F]):F[Int]
     
-Now we can implement logic of our method foo. But we can't run it. To run it we should provide typeclass instance for DbAlg[IO] and LoggerAlg[IO].
+Now we can implement logic of our method foo. But we can't run it. To run it we should provide typeclass instance for `DbAlg[IO]` and `LoggerAlg[IO]`.
 Then we can run it. For example:
 
     class IOLoggerAlg(logger:Logger) extends LoggerAlg[IO] {
@@ -83,13 +91,6 @@ In case if we "run" them - specializing them on the same monad - also no problem
 This approach called tagless final. For now no explanation why, we have to understand few more things to understand the name.
 But we can perfectly use the approach without understanding it's name.
     
-## better than mtl ##
-So how is it better than mtl? My experience so far that it's way easier to implement and reason about. Especially for someone coming from OOP backgroung.
-It's like dependency injection and interfaces all over again. This is subjective.
-
-Objectively it's faster because we don't have to wrap our values into 10 layers of monad transformers. 
-And we also don't have to write flatMap again and again for each transformer. 
-
 ## wtf is algebra ##
 Algebra in this case is just set of objects and operations. It's just a way to describe your computation.
 In other words it's embedded dsl.
@@ -158,7 +159,7 @@ That lifting of `LoggerAlg` is annoying. We can make it slightly better with nat
 
 We still have to specify `EitherT` type parameters. But this one should work way better for optional.
 
-See demo for details.
+See [github:better-than-io-tf](https://github.com/dehun/better-than-io-tf) for details.
 
 ## eco-system ##
 Tagless final approach plays nicely with doobie, fs2 and http4s.
@@ -166,5 +167,5 @@ Tagless final approach plays nicely with doobie, fs2 and http4s.
 ## part 3 ##
 In [part 3](./03_dec_2018-Better than IO, part 3.html) we are going to answer second question - "must produce side effect".
 
-## demo ##
+## source code ##
 You can find source code at [github:better-than-io-tf](https://github.com/dehun/better-than-io-tf)
