@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import re
 import os
 import shutil
@@ -5,6 +7,7 @@ import glob
 import logging
 import datetime
 import subprocess
+from shutil import copyfile
 
 import jinja2
 
@@ -65,8 +68,8 @@ def generate_index_page_for_articles(articles):
     logging.info("generating index file")
 
     for a in articles:
-        print parse_article_filename(a)["date"]
-        print a
+        print(parse_article_filename(a)["date"])
+        print(a)
 
     rendered_index = templates.get_template('articles_index.html').render(
         articles=[parse_article_filename(a) for a in articles])
@@ -135,6 +138,11 @@ def prepare_resources():
     logging.info("preparing resources")
     subprocess.check_call("rsync -vra ./res/* ./static", shell=True)
 
+def prepare_cv():
+    logging.info("preparing cv")
+    copyfile("../cv/cv.html", "./static/cv.html")
+    copyfile("../cv/cv.css", "./static/cv.css")
+
 
 def main():
     # prepare static folder
@@ -154,6 +162,8 @@ def main():
     prepare_resources()
     # make a link from about to index
     os.link("static/articles.html", "static/index.html")
+    # update cv
+    prepare_cv()
 
 
 if __name__ == '__main__':
