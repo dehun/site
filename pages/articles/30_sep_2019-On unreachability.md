@@ -90,4 +90,4 @@ Increasing __reliability__ comes at cost of __waste__d work.
 To be __reliable__ is to be quick or be dead.
 
 ## bonus ##
-When we increase amount of requests per second, the 3rd parties we depend upon  to execute those requests are starting to require more management. Their unreliability starts to show up more (percent wise the same, but for human perception it feels like more often because of higher number of requests). All the issues we discussed above about `waste` are becoming more apparent. However the system scales. Compare start-up to big company.
+When we increase amount of requests per second, the 3rd parties we depend upon  to execute those requests are starting to require more management. Their unreliability starts to show up more (percent wise the same, but for human perception it feels like more often because of higher number of requests). All the issues we discussed above about __waste__ are becoming more apparent. However the system scales. Compare start-up to a big company.

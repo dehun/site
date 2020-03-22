@@ -1,1 +1,1 @@
-python regen.py && docker build -t site . && docker run --rm --name site -p8080:80 site
+python regen.py && docker build -t site . && docker run --rm --name site -p9090:80 site
