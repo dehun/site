@@ -12,8 +12,8 @@ from shutil import copyfile
 import jinja2
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 logging.basicConfig(level=logging.INFO)
 
@@ -41,7 +41,7 @@ def parse_article_filename(article_file):
 
 def html_from_markdown_file(markdown_file):
     article_html = subprocess.check_output("markdown \"%s\"" % (markdown_file),
-                                           shell=True)
+                                           shell=True).decode('utf-8')
     return article_html
 
 
