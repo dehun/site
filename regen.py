@@ -142,6 +142,7 @@ def prepare_cv():
     logging.info("preparing cv")
     copyfile("../cv/cv.html", "./static/cv.html")
     copyfile("../cv/cv.css", "./static/cv.css")
+    copyfile("../cv/cvprint.css", "./static/cvprint.css")    
 
 
 def main():
